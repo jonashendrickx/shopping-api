@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JonasHendrickx.Shop.Contracts\JonasHendrickx.Shop.Contracts.csproj" />
     <ProjectReference Include="..\JonasHendrickx.Shop.DataContext\JonasHendrickx.Shop.DataContext.csproj" />
+    <ProjectReference Include="..\JonasHendrickx.Shop.Infrastructure\JonasHendrickx.Shop.Infrastructure.csproj" />
+    <ProjectReference Include="..\JonasHendrickx.Shop.Services\JonasHendrickx.Shop.Services.csproj" />
   </ItemGroup>
 
 </Project>

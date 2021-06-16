@@ -1,3 +1,4 @@
+using JonasHendrickx.Shop.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using JonasHendrickx.Shop.DataContext.Context;
+using JonasHendrickx.Shop.Infrastructure.Contracts;
+using JonasHendrickx.Shop.Infrastructure.Repositories;
+using JonasHendrickx.Shop.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace JonasHendrickx.Shop.Api
@@ -21,7 +25,11 @@ namespace JonasHendrickx.Shop.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Can be replaced with actual database here. For demo purposes, it was easier to use an in-memory database. :-)
             services.AddDbContext<ShopDbContext>(opt => opt.UseInMemoryDatabase("shop"));
+            services.AddTransient<ShopDbContext>();
+            services.AddTransient<IBasketRepository, BasketRepository>();
+            services.AddTransient<IBasketService, BasketService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

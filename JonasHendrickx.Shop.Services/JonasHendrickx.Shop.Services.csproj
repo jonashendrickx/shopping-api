@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JonasHendrickx.Shop.Contracts\JonasHendrickx.Shop.Contracts.csproj" />
+    <ProjectReference Include="..\JonasHendrickx.Shop.Infrastructure\JonasHendrickx.Shop.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
