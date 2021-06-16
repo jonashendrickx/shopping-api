@@ -7,5 +7,6 @@ namespace JonasHendrickx.Shop.Contracts
     {
         Task<Guid> CreateAsync();
         Task DeleteAsync(Guid id);
+        Task<decimal> GetAmountAsync(Guid id);
     }
 }

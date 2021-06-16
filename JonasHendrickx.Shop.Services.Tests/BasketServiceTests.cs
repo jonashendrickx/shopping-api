@@ -3,7 +3,9 @@ using JonasHendrickx.Shop.Contracts;
 using NUnit.Framework;
 using Moq;
 using System;
+using System.Collections.Generic;
 using JonasHendrickx.Shop.Infrastructure.Contracts;
+using JonasHendrickx.Shop.Models.Entities;
 
 namespace JonasHendrickx.Shop.Services.Tests
 {
@@ -44,6 +46,45 @@ namespace JonasHendrickx.Shop.Services.Tests
 
             // Assert
             _basketRepositoryMock.Verify(x => x.DeleteAsync(It.Is<Guid>(p => p == id)), Times.Once);
+        }
+        
+        [Test]
+        public async Task GetAmountAsync_ReturnsBasketTotalPrice_WhenBasketHasProducts()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _basketRepositoryMock
+                .Setup(x => x.GetAsync(It.Is<Guid>(p => p == id)))
+                .ReturnsAsync(
+                    new Basket
+                    {
+                        Id = id,
+                        LineItems = new List<BasketLineItem>
+                        {
+                            new BasketLineItem
+                            {
+                                Amount = 2,
+                                ProductListing = new ProductListing
+                                {
+                                    Price = 5
+                                }
+                            },
+                            new BasketLineItem
+                            {
+                                Amount = 3,
+                                ProductListing = new ProductListing
+                                {
+                                    Price = 3
+                                }
+                            }
+                        }
+                    });
+
+            // Act
+            var actual = await _sut.GetAmountAsync(id);
+
+            // Assert
+            Assert.AreEqual(19M, actual);
         }
     }
 }

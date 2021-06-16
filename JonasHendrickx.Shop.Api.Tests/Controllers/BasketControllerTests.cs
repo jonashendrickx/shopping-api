@@ -52,5 +52,23 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
             Assert.AreEqual(typeof(NoContentResult), response.GetType());
             _basketServiceMock.Verify(x => x.DeleteAsync(It.Is<Guid>(p => p == id)), Times.Once);
         }
+        
+        [Test]
+        public async Task GetAmount_ReturnOk_WhenBasketTotalAmountIsCalculated()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _basketServiceMock.Setup(x => x.GetAmountAsync(It.Is<Guid>(p => p == id))).ReturnsAsync(19M);
+
+            // Act
+            var response = await _sut.GetAmount(id);
+
+            // Assert
+            Assert.AreEqual(typeof(OkObjectResult), response.GetType());
+            var actual = (OkObjectResult)response;
+            Assert.AreEqual(19M, (decimal)actual.Value);
+
+            _basketServiceMock.Verify(x => x.GetAmountAsync(It.Is<Guid>(p => p == id)), Times.Once);
+        }
     }
 }

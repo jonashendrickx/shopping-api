@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JonasHendrickx.Shop.DataContext.Context;
 using JonasHendrickx.Shop.Infrastructure.Contracts;
 using JonasHendrickx.Shop.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace JonasHendrickx.Shop.Infrastructure.Repositories
 {
@@ -28,6 +29,12 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
             var entity = await _dbContext.Baskets.FindAsync(id);
             _dbContext.Baskets.Remove(entity);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Basket> GetAsync(Guid id)
+        {
+            var entity = await _dbContext.Baskets.FindAsync(id);
+            return entity;
         }
     }
 }
