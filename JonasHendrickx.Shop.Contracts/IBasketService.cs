@@ -6,5 +6,6 @@ namespace JonasHendrickx.Shop.Contracts
     public interface IBasketService
     {
         Task<Guid> CreateAsync();
+        Task DeleteAsync(Guid id);
     }
 }

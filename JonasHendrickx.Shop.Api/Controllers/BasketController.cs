@@ -25,5 +25,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             var id = await _basketService.CreateAsync();
             return Ok(id);
         }
+        
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _basketService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }

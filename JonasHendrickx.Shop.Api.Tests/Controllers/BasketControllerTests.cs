@@ -38,5 +38,19 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
             var result = (OkObjectResult)response;
             Assert.AreEqual(id, (Guid)result.Value);
         }
+        
+        [Test]
+        public async Task Delete_ReturnsNoContent_WhenBaskedIsDeleted()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            var response = await _sut.Delete(id);
+
+            // Assert
+            Assert.AreEqual(typeof(NoContentResult), response.GetType());
+            _basketServiceMock.Verify(x => x.DeleteAsync(It.Is<Guid>(p => p == id)), Times.Once);
+        }
     }
 }

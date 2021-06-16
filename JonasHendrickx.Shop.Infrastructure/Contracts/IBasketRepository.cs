@@ -6,5 +6,6 @@ namespace JonasHendrickx.Shop.Infrastructure.Contracts
     public interface IBasketRepository
     {
         Task<Guid> CreateAsync();
+        Task DeleteAsync(Guid id);
     }
 }

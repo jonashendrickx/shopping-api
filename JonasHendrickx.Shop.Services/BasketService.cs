@@ -19,5 +19,10 @@ namespace JonasHendrickx.Shop.Services
             var id = await _basketRepository.CreateAsync();
             return id;
         }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            await _basketRepository.DeleteAsync(id);
+        }
     }
 }

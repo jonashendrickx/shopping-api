@@ -30,5 +30,18 @@ namespace JonasHendrickx.Shop.Services.Tests
 
             // Assert
         }
+        
+        [Test]
+        public async Task DeleteAsync_ReturnsCallsRepositoryWithCorrectId_WhenBaskedIsDeleted()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+
+            // Act
+            await _sut.DeleteAsync(id);
+
+            // Assert
+            _basketRepositoryMock.Verify(x => x.DeleteAsync(It.Is<Guid>(p => p == id)), Times.Once);
+        }
     }
 }

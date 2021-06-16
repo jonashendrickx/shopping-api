@@ -22,5 +22,12 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
             return entity.Id;
         }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var entity = await _dbContext.Baskets.FindAsync(id);
+            _dbContext.Baskets.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
