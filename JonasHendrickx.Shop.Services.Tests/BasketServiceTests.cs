@@ -20,7 +20,7 @@ namespace JonasHendrickx.Shop.Services.Tests
         }
         
         [Test]
-        public async Task CreateAsync_ReturnsId_WhenBaskedIsCreated()
+        public async Task CreateAsync_ReturnsId_WhenBasketIsCreated()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -32,7 +32,7 @@ namespace JonasHendrickx.Shop.Services.Tests
         }
         
         [Test]
-        public async Task DeleteAsync_ReturnsCallsRepositoryWithCorrectId_WhenBaskedIsDeleted()
+        public async Task DeleteAsync_ReturnsCallsRepositoryWithCorrectId_WhenBasketIsDeleted()
         {
             // Arrange
             var id = Guid.NewGuid();

@@ -24,7 +24,7 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
         }
         
         [Test]
-        public async Task Create_ReturnsId_WhenBaskedIsCreated()
+        public async Task Create_ReturnsId_WhenBasketIsCreated()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -40,7 +40,7 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
         }
         
         [Test]
-        public async Task Delete_ReturnsNoContent_WhenBaskedIsDeleted()
+        public async Task Delete_ReturnsNoContent_WhenBasketIsDeleted()
         {
             // Arrange
             var id = Guid.NewGuid();
