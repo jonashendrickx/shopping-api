@@ -11,7 +11,7 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
         private readonly ShopDbContext _dbContext;
 
         public BasketRepository(ShopDbContext dbContext)
-        {
+    {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
         

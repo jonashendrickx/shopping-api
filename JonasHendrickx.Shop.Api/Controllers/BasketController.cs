@@ -14,11 +14,11 @@ namespace JonasHendrickx.Shop.Api.Controllers
         private readonly IBasketService _basketService;
 
         public BasketController(IBasketService basketService, ILogger<BasketController> logger)
-        {
+    {
             _basketService = basketService ?? throw new ArgumentNullException(nameof(basketService));
             _logger = logger;
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Create()
         {

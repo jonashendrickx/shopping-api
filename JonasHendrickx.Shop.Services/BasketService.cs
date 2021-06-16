@@ -10,7 +10,7 @@ namespace JonasHendrickx.Shop.Services
         private readonly IBasketRepository _basketRepository;
         
         public BasketService(IBasketRepository basketRepository)
-        {
+    {
             _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
         }
         

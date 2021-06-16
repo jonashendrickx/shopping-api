@@ -14,7 +14,7 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
         private Mock<IBasketService> _basketServiceMock;
         private Mock<ILogger<BasketController>> _loggerMock;
         private BasketController _sut;
-
+        
         [SetUp]
         public void SetUp()
         {
