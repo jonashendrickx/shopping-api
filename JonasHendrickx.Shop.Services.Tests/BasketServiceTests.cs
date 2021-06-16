@@ -27,8 +27,10 @@ namespace JonasHendrickx.Shop.Services.Tests
             _basketRepositoryMock.Setup(x => x.CreateAsync()).ReturnsAsync(id);
 
             // Act
+            var actual = await _sut.CreateAsync();
 
             // Assert
+            Assert.AreEqual(id, actual);
         }
         
         [Test]
