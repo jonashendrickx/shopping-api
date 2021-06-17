@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JonasHendrickx.Shop.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,28 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
+            var products = new List<Product>
+            {
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Code = "PEN",
+                    Name = "Lana Pen"
+                },
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Code = "TSHIRT",
+                    Name = "Lana T-Shirt"
+                },
+                new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Code = "MUG",
+                    Name = "Lana Coffee Mug"
+                },
+            };
+            
             modelBuilder.Entity<Product>(m =>
             {
                 m.HasKey(x => x.Id);
@@ -38,6 +61,8 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
+
+                m.HasData(products);
             });
             
             modelBuilder.Entity<ProductListing>(m =>
@@ -54,6 +79,15 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasOne(x => x.Product)
                     .WithMany(x => x.ProductListings)
                     .HasForeignKey(x => x.ProductId);
+
+                var productListings = new List<ProductListing>
+                {
+                    new ProductListing { Id = Guid.NewGuid(), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
+                    new ProductListing { Id = Guid.NewGuid(), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
+                    new ProductListing { Id = Guid.NewGuid(), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
+                };
+
+                m.HasData(productListings);
             });
             
             modelBuilder.Entity<BasketLineItem>(m =>
