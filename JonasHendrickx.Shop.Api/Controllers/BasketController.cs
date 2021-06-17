@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JonasHendrickx.Shop.Api.Contracts;
 using JonasHendrickx.Shop.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,20 @@ namespace JonasHendrickx.Shop.Api.Controllers
         {
             var amount = await _basketService.GetAmountAsync(id);
             return Ok(amount);
+        }
+
+        [HttpPost("{basketId}/AddProductListing")]
+        public async Task<IActionResult> AddProductListing(Guid basketId, AddProductListingInputModel body)
+        {
+            try
+            {
+                var basketLineItemId = await _basketService.AddProductListingAsync(basketId, body.ProductListingId, body.Amount);
+                return Ok(basketLineItemId);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

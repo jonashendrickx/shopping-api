@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using JonasHendrickx.Shop.DataContext.Context;
 using JonasHendrickx.Shop.Infrastructure.Contracts;
 using JonasHendrickx.Shop.Models.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace JonasHendrickx.Shop.Infrastructure.Repositories
 {
@@ -35,6 +34,18 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
         {
             var entity = await _dbContext.Baskets.FindAsync(id);
             return entity;
+        }
+
+        public async Task<Guid> AddProductLineItemAsync(Guid basketId, Guid productListingId, uint amount)
+        {
+            var entity = new BasketLineItem
+            {
+                BasketId = basketId,
+                ProductListingId = productListingId
+            };
+            _dbContext.BasketLineItems.Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity.Id;
         }
     }
 }

@@ -8,5 +8,6 @@ namespace JonasHendrickx.Shop.Contracts
         Task<Guid> CreateAsync();
         Task DeleteAsync(Guid id);
         Task<decimal> GetAmountAsync(Guid id);
+        Task<Guid> AddProductListingAsync(Guid basketId, Guid productListingId, uint amount);
     }
 }

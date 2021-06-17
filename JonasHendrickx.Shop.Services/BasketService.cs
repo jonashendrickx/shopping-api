@@ -9,11 +9,13 @@ namespace JonasHendrickx.Shop.Services
     public class BasketService : IBasketService
     {
         private readonly IBasketRepository _basketRepository;
+        private readonly IProductListingRepository _productListingRepository;
         
-        public BasketService(IBasketRepository basketRepository)
+        public BasketService(IBasketRepository basketRepository, IProductListingRepository productListingRepository)
     {
             _basketRepository = basketRepository ?? throw new ArgumentNullException(nameof(basketRepository));
-        }
+            _productListingRepository = productListingRepository ?? throw new ArgumentNullException(nameof(basketRepository));
+    }
         
         public async Task<Guid> CreateAsync()
         {
@@ -37,6 +39,26 @@ namespace JonasHendrickx.Shop.Services
 
             var result = basket.LineItems.Sum(x => x.Amount * x.ProductListing.Price);
             return result;
+        }
+
+        public async Task<Guid> AddProductListingAsync(Guid basketId, Guid productListingId, uint amount)
+        {
+            // basket not found.
+            var basket = await _basketRepository.GetAsync(basketId);
+            if (basket == null)
+            {
+                throw new ArgumentException("BASKET_NOT_FOUND", nameof(basketId));
+            }
+
+            // product listing not found.
+            var productListing = await _productListingRepository.GetAsync(productListingId);
+            if (productListing == null)
+            {
+                throw new ArgumentException("PRODUCT_LINE_ITEM_NOT_FOUND", nameof(productListingId));
+            }
+
+            var basketLineItemId = await _basketRepository.AddProductLineItemAsync(basketId, productListingId, amount);
+            return basketLineItemId;
         }
     }
 }

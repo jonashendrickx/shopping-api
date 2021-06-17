@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using JonasHendrickx.Shop.Contracts;
 using NUnit.Framework;
 using Moq;
 using System;
@@ -12,15 +11,17 @@ namespace JonasHendrickx.Shop.Services.Tests
     public class BasketServiceTests
     {
         private Mock<IBasketRepository> _basketRepositoryMock;
+        private Mock<IProductListingRepository> _productListingRepositoryMock;
         private BasketService _sut;
 
         [SetUp]
         public void SetUp()
         {
             _basketRepositoryMock = new Mock<IBasketRepository>();
-            _sut = new BasketService(_basketRepositoryMock.Object);
+            _productListingRepositoryMock = new Mock<IProductListingRepository>();
+            _sut = new BasketService(_basketRepositoryMock.Object, _productListingRepositoryMock.Object);
         }
-        
+
         [Test]
         public async Task CreateAsync_ReturnsId_WhenBasketIsCreated()
         {
@@ -34,7 +35,7 @@ namespace JonasHendrickx.Shop.Services.Tests
             // Assert
             Assert.AreEqual(id, actual);
         }
-        
+
         [Test]
         public async Task DeleteAsync_ReturnsCallsRepositoryWithCorrectId_WhenBasketIsDeleted()
         {
@@ -47,7 +48,7 @@ namespace JonasHendrickx.Shop.Services.Tests
             // Assert
             _basketRepositoryMock.Verify(x => x.DeleteAsync(It.Is<Guid>(p => p == id)), Times.Once);
         }
-        
+
         [Test]
         public async Task GetAmountAsync_ReturnsBasketTotalPrice_WhenBasketHasProducts()
         {
@@ -85,6 +86,74 @@ namespace JonasHendrickx.Shop.Services.Tests
 
             // Assert
             Assert.AreEqual(19M, actual);
+        }
+
+        [Test]
+        public async Task AddProductListingAsync_ThrowsArgumentException_WhenBasketDoesNotExist()
+        {
+            // Arrange
+            var basketId = Guid.NewGuid();
+            var productListingId = Guid.NewGuid();
+            
+            // Act
+            try
+            {
+                await _sut.AddProductListingAsync(basketId, productListingId, 1);
+            }
+            catch (ArgumentException e)
+            {
+                Assert.AreEqual("basketId", e.ParamName);
+            }
+
+            // Assert
+            _basketRepositoryMock.Verify(x => x.GetAsync(It.Is<Guid>(p => p == basketId)), Times.Once);
+        }
+        
+        [Test]
+        public async Task AddProductListingAsync_ThrowsArgumentException_WhenProductLineItemDoesNotExist()
+        {
+            // Arrange
+            var basketId = Guid.NewGuid();
+            var productListingId = Guid.NewGuid();
+            _basketRepositoryMock.Setup(x => x.GetAsync(It.Is<Guid>(p => p == basketId)))
+                .ReturnsAsync(new Basket());
+            
+            // Act
+            try
+            {
+                await _sut.AddProductListingAsync(basketId, productListingId, 1);
+            }
+            catch (ArgumentException e)
+            {
+                Assert.AreEqual("productListingId", e.ParamName);
+            }
+
+            // Assert
+            _basketRepositoryMock.Verify(x => x.GetAsync(It.Is<Guid>(p => p == basketId)), Times.Once);
+            _productListingRepositoryMock.Verify(x => x.GetAsync(It.Is<Guid>(p => p == productListingId)), Times.Once);
+        }
+        
+        [Test]
+        public async Task AddProductListingAsync_ReturnsBasketLineItemId_WhenIsInserted()
+        {
+            // Arrange
+            var basketId = Guid.NewGuid();
+            var productListingId = Guid.NewGuid();
+            var expected = Guid.NewGuid();
+            _basketRepositoryMock.Setup(x => x.GetAsync(It.Is<Guid>(p => p == basketId)))
+                .ReturnsAsync(new Basket());
+            _productListingRepositoryMock.Setup(x => x.GetAsync(It.Is<Guid>(p => p == productListingId)))
+                .ReturnsAsync(new ProductListing());
+            _basketRepositoryMock.Setup(x => x.AddProductLineItemAsync(It.Is<Guid>(p => p == basketId), It.Is<Guid>(p => p == productListingId), It.Is<uint>(p => p == 1)))
+                .ReturnsAsync(expected);
+            
+            // Act
+            var actual = await _sut.AddProductListingAsync(basketId, productListingId, 1);
+
+            // Assert
+            _basketRepositoryMock.Verify(x => x.GetAsync(It.Is<Guid>(p => p == basketId)), Times.Once);
+            _productListingRepositoryMock.Verify(x => x.GetAsync(It.Is<Guid>(p => p == productListingId)), Times.Once);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
