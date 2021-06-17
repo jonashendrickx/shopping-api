@@ -89,6 +89,29 @@ namespace JonasHendrickx.Shop.Services.Tests
         }
 
         [Test]
+        public async Task GetAmountAsync_ThrowsArgumentException_WhenBasketIsNotFound()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _basketRepositoryMock
+                .Setup(x => x.GetAsync(It.Is<Guid>(p => p == id)))
+                .ReturnsAsync((Basket)null);
+
+            // Act
+            try
+            {
+                await _sut.GetAmountAsync(id);
+            }
+            catch (ArgumentException e)
+            {
+                Assert.AreEqual("BASKET_NOT_FOUND", e.Message);
+            }
+
+            // Assert
+        }
+
+        
+        [Test]
         public async Task AddProductListingAsync_ThrowsArgumentException_WhenBasketDoesNotExist()
         {
             // Arrange

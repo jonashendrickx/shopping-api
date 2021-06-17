@@ -37,8 +37,15 @@ namespace JonasHendrickx.Shop.Api.Controllers
         [HttpGet("Amount/{id}")]
         public async Task<IActionResult> GetAmount(Guid id)
         {
-            var amount = await _basketService.GetAmountAsync(id);
-            return Ok(amount);
+            try
+            {
+                var amount = await _basketService.GetAmountAsync(id);
+                return Ok(amount);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("{basketId}/AddProductListing")]

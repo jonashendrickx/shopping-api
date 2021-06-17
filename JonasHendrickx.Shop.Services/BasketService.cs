@@ -32,6 +32,11 @@ namespace JonasHendrickx.Shop.Services
         {
             var basket = await _basketRepository.GetAsync(id);
 
+            if (basket == null)
+            {
+                throw new ArgumentException("BASKET_NOT_FOUND");
+            }
+
             if (basket.LineItems == null || !basket.LineItems.Any())
             {
                 return 0;

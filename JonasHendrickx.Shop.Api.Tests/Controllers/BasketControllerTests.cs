@@ -73,6 +73,21 @@ namespace JonasHendrickx.Shop.Api.Tests.Controllers
         }
         
         [Test]
+        public async Task GetAmount_ReturnBadRequest_WhenBasketNotFound()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _basketServiceMock.Setup(x => x.GetAmountAsync(It.Is<Guid>(p => p == id))).Throws<ArgumentException>();
+
+            // Act
+            var response = await _sut.GetAmount(id);
+
+            // Assert
+            Assert.AreEqual(typeof(BadRequestObjectResult), response.GetType());
+            _basketServiceMock.Verify(x => x.GetAmountAsync(It.Is<Guid>(p => p == id)), Times.Once);
+        }
+        
+        [Test]
         public async Task AddProductListing_ReturnOk_WhenInserted()
         {
             // Arrange
