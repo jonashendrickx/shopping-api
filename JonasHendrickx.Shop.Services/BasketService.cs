@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using JonasHendrickx.Shop.Contracts;
+using JonasHendrickx.Shop.Contracts.Discounts;
 using JonasHendrickx.Shop.Infrastructure.Contracts;
+using JonasHendrickx.Shop.Services.Discounts;
 
 namespace JonasHendrickx.Shop.Services
 {
@@ -42,8 +44,30 @@ namespace JonasHendrickx.Shop.Services
                 return 0;
             }
 
-            var result = basket.LineItems.Sum(x => x.Amount * x.ProductListing.Price);
-            return result;
+            decimal sum = 0;
+            foreach (var lineItem in basket.LineItems)
+            {
+                var calculateInputModel = new CalculateInputModel
+                {
+                    Quantity = lineItem.Amount,
+                    TotalPrice = lineItem.Amount * lineItem.ProductListing.Price,
+                    UnitPrice = lineItem.ProductListing.Price
+                };
+                foreach (var discount in lineItem.ProductListing.Discounts)
+                {
+                    switch (discount.Code)
+                    {
+                        case "QTY_TO_PCT":
+                            var strategy = new QuantityToPercentageDiscountStrategy(discount.Rules);
+                            calculateInputModel.TotalPrice -= strategy.Calculate(calculateInputModel);
+                            break;
+                    }
+                }
+
+                sum += calculateInputModel.TotalPrice;
+            }
+
+            return sum;
         }
 
         public async Task<Guid> AddProductListingAsync(Guid basketId, Guid productListingId, uint amount)

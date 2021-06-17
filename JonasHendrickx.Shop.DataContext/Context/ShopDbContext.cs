@@ -15,6 +15,7 @@ namespace JonasHendrickx.Shop.DataContext.Context
         public DbSet<BasketLineItem> BasketLineItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductListing> ProductListings { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -65,6 +66,13 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasData(products);
             });
             
+            var productListings = new List<ProductListing>
+            {
+                new ProductListing { Id = Guid.NewGuid(), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
+                new ProductListing { Id = Guid.NewGuid(), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
+                new ProductListing { Id = Guid.NewGuid(), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
+            };
+            
             modelBuilder.Entity<ProductListing>(m =>
             {
                 m.HasKey(x => x.Id);
@@ -79,13 +87,6 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasOne(x => x.Product)
                     .WithMany(x => x.ProductListings)
                     .HasForeignKey(x => x.ProductId);
-
-                var productListings = new List<ProductListing>
-                {
-                    new ProductListing { Id = Guid.NewGuid(), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
-                    new ProductListing { Id = Guid.NewGuid(), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
-                    new ProductListing { Id = Guid.NewGuid(), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
-                };
 
                 m.HasData(productListings);
             });
@@ -109,6 +110,37 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasMany(x => x.LineItems)
                     .WithOne(x => x.Basket)
                     .HasForeignKey(x => x.BasketId);
+            });
+            
+            modelBuilder.Entity<Discount>(m =>
+            {
+                m.HasKey(x => x.Id);
+                
+                m.Property(x => x.Code)
+                    .IsRequired();
+                
+                m.Property(x => x.ProductListingId)
+                    .IsRequired();
+                
+                m.Property(x => x.Rules)
+                    .IsRequired();
+                
+                m.HasOne<ProductListing>(x => x.ProductListing)
+                    .WithMany(x => x.Discounts)
+                    .HasForeignKey(x => x.ProductListingId);
+                
+                var discounts = new List<Discount>
+                {
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = "QTY_TO_PCT",
+                        Rules = "{\"qty\":\"3\",\"pct\":\"0.25\"}",
+                        ProductListingId = productListings[1].Id
+                    }
+                };
+
+                m.HasData(productListings);
             });
         }
     }

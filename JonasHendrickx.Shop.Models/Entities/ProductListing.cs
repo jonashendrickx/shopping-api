@@ -12,5 +12,6 @@ namespace JonasHendrickx.Shop.Models.Entities
         public Guid ProductId { get; set; }
         public virtual Product Product { get; set; }
         public virtual ICollection<BasketLineItem> BasketLineItems { get; set; }
+        public virtual ICollection<Discount> Discounts { get; set; }
     }
 }
