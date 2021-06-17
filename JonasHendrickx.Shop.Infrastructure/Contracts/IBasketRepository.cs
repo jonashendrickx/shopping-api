@@ -9,5 +9,6 @@ namespace JonasHendrickx.Shop.Infrastructure.Contracts
         Task<Guid> CreateAsync();
         Task DeleteAsync(Guid id);
         Task<Basket> GetAsync(Guid id);
+        Task<Guid> AddProductLineItemAsync(Guid basketId, Guid productListingId, uint amount);
     }
 }

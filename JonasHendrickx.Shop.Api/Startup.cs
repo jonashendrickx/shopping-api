@@ -29,6 +29,7 @@ namespace JonasHendrickx.Shop.Api
             services.AddDbContext<ShopDbContext>(opt => opt.UseInMemoryDatabase("shop"));
             services.AddTransient<ShopDbContext>();
             services.AddTransient<IBasketRepository, BasketRepository>();
+            services.AddTransient<IProductListingRepository, ProductListingRepository>();
             services.AddTransient<IBasketService, BasketService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
