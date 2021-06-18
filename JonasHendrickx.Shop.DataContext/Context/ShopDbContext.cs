@@ -68,9 +68,9 @@ namespace JonasHendrickx.Shop.DataContext.Context
             
             var productListings = new List<ProductListing>
             {
-                new ProductListing { Id = Guid.NewGuid(), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
-                new ProductListing { Id = Guid.NewGuid(), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
-                new ProductListing { Id = Guid.NewGuid(), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
+                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
+                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
+                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
             };
             
             modelBuilder.Entity<ProductListing>(m =>
