@@ -15,7 +15,7 @@ namespace JonasHendrickx.Shop.Services.Discounts
         
         public string Code { get; protected set; }
 
-        public abstract decimal Calculate(CalculateInputModel criteria);
+        public abstract CalculateInputModel Calculate(CalculateInputModel criteria);
 
         private Dictionary<string, string> Parse(string input)
         {

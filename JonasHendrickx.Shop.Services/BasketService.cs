@@ -57,9 +57,13 @@ namespace JonasHendrickx.Shop.Services
                 {
                     switch (discount.Code)
                     {
+                        case "BUY_TO_FREE_QTY":
+                            BaseDiscountStrategy strategy = new BuyToFreeQuantityDiscountStrategy(discount.Rules);
+                            calculateInputModel = strategy.Calculate(calculateInputModel);
+                            break;
                         case "QTY_TO_PCT":
-                            var strategy = new QuantityToPercentageDiscountStrategy(discount.Rules);
-                            calculateInputModel.TotalPrice -= strategy.Calculate(calculateInputModel);
+                            strategy = new QuantityToPercentageDiscountStrategy(discount.Rules);
+                            calculateInputModel = strategy.Calculate(calculateInputModel);
                             break;
                     }
                 }

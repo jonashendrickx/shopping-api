@@ -137,6 +137,54 @@ namespace JonasHendrickx.Shop.Services.Tests
             // Assert
             Assert.AreEqual(16.75M, actual);
         }
+        
+        [Test]
+        public async Task GetAmountAsync_ReturnsBasketTotalPrice_WhenBasketHasProductsWithBuyToFreeQtyDiscounts()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _basketRepositoryMock
+                .Setup(x => x.GetAsync(It.Is<Guid>(p => p == id)))
+                .ReturnsAsync(
+                    new Basket
+                    {
+                        Id = id,
+                        LineItems = new List<BasketLineItem>
+                        {
+                            new BasketLineItem
+                            {
+                                Amount = 2,
+                                ProductListing = new ProductListing
+                                {
+                                    Price = 5,
+                                    Discounts = new List<Discount>()
+                                }
+                            },
+                            new BasketLineItem
+                            {
+                                Amount = 3,
+                                ProductListing = new ProductListing
+                                {
+                                    Price = 3,
+                                    Discounts = new List<Discount>
+                                    {
+                                        new Discount
+                                        {
+                                            Code = "BUY_TO_FREE_QTY",
+                                            Rules = "{\"buy_qty\":\"2\",\"free_qty\":\"1\"}"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+            // Act
+            var actual = await _sut.GetAmountAsync(id);
+
+            // Assert
+            Assert.AreEqual(16M, actual);
+        }
 
         [Test]
         public async Task GetAmountAsync_ThrowsArgumentException_WhenBasketIsNotFound()

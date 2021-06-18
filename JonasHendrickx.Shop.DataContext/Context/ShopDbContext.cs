@@ -136,11 +136,18 @@ namespace JonasHendrickx.Shop.DataContext.Context
                         Id = Guid.NewGuid(),
                         Code = "QTY_TO_PCT",
                         Rules = "{\"qty\":\"3\",\"pct\":\"0.25\"}",
-                        ProductListingId = productListings[1].Id
+                        ProductListingId = productListings[1].Id // T-SHIRT 25% discount if you at least 3
+                    },
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = "BUY_TO_FREE_QTY",
+                        Rules = "{\"buy_qty\":\"2\",\"free_qty\":\"1\"}",
+                        ProductListingId = productListings[0].Id // PEN BUY 2 GET 1 FREE DISCOUNT
                     }
                 };
 
-                m.HasData(productListings);
+                m.HasData(discounts);
             });
         }
     }
