@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JonasHendrickx.Shop.Api.Contracts
+namespace JonasHendrickx.Shop.Api.Contracts.Basket
 {
     public class AddProductListingInputModel
     {

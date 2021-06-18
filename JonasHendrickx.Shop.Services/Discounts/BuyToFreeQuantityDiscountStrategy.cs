@@ -26,10 +26,7 @@ namespace JonasHendrickx.Shop.Services.Discounts
             // 2 buy - 1 free
             // 3
             var freeItems = criteria.Quantity / (buyQuantity + freeQuantity);
-            var actualPaidItems = criteria.Quantity - freeItems;
-            var discount = (decimal)actualPaidItems / criteria.Quantity;
-            criteria.TotalPrice *= discount;
-            criteria.UnitPrice *= discount;
+            criteria.TotalPrice = criteria.UnitPrice * (criteria.Quantity - freeItems);
             
             return criteria;
         }

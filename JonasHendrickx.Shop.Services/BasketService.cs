@@ -87,7 +87,7 @@ namespace JonasHendrickx.Shop.Services
             var productListing = await _productListingRepository.GetAsync(productListingId);
             if (productListing == null)
             {
-                throw new ArgumentException("PRODUCT_LINE_ITEM_NOT_FOUND", nameof(productListingId));
+                throw new ArgumentException("PRODUCT_LISTING_NOT_FOUND", nameof(productListingId));
             }
 
             var basketLineItemId = await _basketRepository.AddProductLineItemAsync(basketId, productListingId, amount);

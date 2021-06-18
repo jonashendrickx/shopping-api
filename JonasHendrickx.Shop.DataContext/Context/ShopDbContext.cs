@@ -28,28 +28,6 @@ namespace JonasHendrickx.Shop.DataContext.Context
             {
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
-
-            var products = new List<Product>
-            {
-                new Product
-                {
-                    Id = Guid.NewGuid(),
-                    Code = "PEN",
-                    Name = "Lana Pen"
-                },
-                new Product
-                {
-                    Id = Guid.NewGuid(),
-                    Code = "TSHIRT",
-                    Name = "Lana T-Shirt"
-                },
-                new Product
-                {
-                    Id = Guid.NewGuid(),
-                    Code = "MUG",
-                    Name = "Lana Coffee Mug"
-                },
-            };
             
             modelBuilder.Entity<Product>(m =>
             {
@@ -62,17 +40,8 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.Property(x => x.Name)
                     .HasMaxLength(50)
                     .IsRequired();
-
-                m.HasData(products);
             });
-            
-            var productListings = new List<ProductListing>
-            {
-                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Price = 5, StartedAt = DateTime.Today, ProductId = products[0].Id },
-                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Price = 20, StartedAt = DateTime.Today, ProductId = products[1].Id },
-                new ProductListing { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Price = 7.5M, StartedAt = DateTime.Today, ProductId = products[2].Id }
-            };
-            
+
             modelBuilder.Entity<ProductListing>(m =>
             {
                 m.HasKey(x => x.Id);
@@ -87,8 +56,6 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasOne(x => x.Product)
                     .WithMany(x => x.ProductListings)
                     .HasForeignKey(x => x.ProductId);
-
-                m.HasData(productListings);
             });
             
             modelBuilder.Entity<BasketLineItem>(m =>
@@ -128,26 +95,6 @@ namespace JonasHendrickx.Shop.DataContext.Context
                 m.HasOne<ProductListing>(x => x.ProductListing)
                     .WithMany(x => x.Discounts)
                     .HasForeignKey(x => x.ProductListingId);
-                
-                var discounts = new List<Discount>
-                {
-                    new Discount
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = "QTY_TO_PCT",
-                        Rules = "{\"qty\":\"3\",\"pct\":\"0.25\"}",
-                        ProductListingId = productListings[1].Id // T-SHIRT 25% discount if you at least 3
-                    },
-                    new Discount
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = "BUY_TO_FREE_QTY",
-                        Rules = "{\"buy_qty\":\"2\",\"free_qty\":\"1\"}",
-                        ProductListingId = productListings[0].Id // PEN BUY 2 GET 1 FREE DISCOUNT
-                    }
-                };
-
-                m.HasData(discounts);
             });
         }
     }

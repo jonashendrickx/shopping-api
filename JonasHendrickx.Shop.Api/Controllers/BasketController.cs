@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using JonasHendrickx.Shop.Api.Contracts;
+using JonasHendrickx.Shop.Api.Contracts.Basket;
 using JonasHendrickx.Shop.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,7 @@ namespace JonasHendrickx.Shop.Api.Controllers
         private readonly IBasketService _basketService;
 
         public BasketController(IBasketService basketService, ILogger<BasketController> logger)
-    {
+        {
             _basketService = basketService ?? throw new ArgumentNullException(nameof(basketService));
             _logger = logger;
         }
@@ -26,15 +26,16 @@ namespace JonasHendrickx.Shop.Api.Controllers
             var id = await _basketService.CreateAsync();
             return Ok(id);
         }
-        
-        [HttpDelete]
+
+        [HttpDelete("{id}")]
+
         public async Task<IActionResult> Delete(Guid id)
         {
             await _basketService.DeleteAsync(id);
             return NoContent();
         }
 
-        [HttpGet("Amount/{id}")]
+        [HttpGet("{id}/Amount")]
         public async Task<IActionResult> GetAmount(Guid id)
         {
             try

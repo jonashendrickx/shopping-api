@@ -3,7 +3,7 @@ using JonasHendrickx.Shop.Contracts;
 using NUnit.Framework;
 using Moq;
 using System;
-using JonasHendrickx.Shop.Api.Contracts;
+using JonasHendrickx.Shop.Api.Contracts.Basket;
 using JonasHendrickx.Shop.Api.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;

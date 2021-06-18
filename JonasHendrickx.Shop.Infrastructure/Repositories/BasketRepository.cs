@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using JonasHendrickx.Shop.DataContext.Context;
 using JonasHendrickx.Shop.Infrastructure.Contracts;
 using JonasHendrickx.Shop.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace JonasHendrickx.Shop.Infrastructure.Repositories
 {
@@ -32,7 +34,11 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
 
         public async Task<Basket> GetAsync(Guid id)
         {
-            var entity = await _dbContext.Baskets.FindAsync(id);
+            var entity = await _dbContext.Baskets
+                .Include(x => x.LineItems)
+                .ThenInclude(x => x.ProductListing)
+                .ThenInclude(x => x.Discounts)
+                .SingleOrDefaultAsync(x => x.Id == id);
             return entity;
         }
 
@@ -41,7 +47,8 @@ namespace JonasHendrickx.Shop.Infrastructure.Repositories
             var entity = new BasketLineItem
             {
                 BasketId = basketId,
-                ProductListingId = productListingId
+                ProductListingId = productListingId,
+                Amount = amount
             };
             _dbContext.BasketLineItems.Add(entity);
             await _dbContext.SaveChangesAsync();
