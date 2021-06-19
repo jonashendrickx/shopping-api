@@ -8,6 +8,12 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["JonasHendrickx.Shop.Api/JonasHendrickx.Shop.Api.csproj", "JonasHendrickx.Shop.Api/"]
+COPY ["JonasHendrickx.Shop.Contracts/JonasHendrickx.Shop.Contracts.csproj", "JonasHendrickx.Shop.Contracts/"]
+COPY ["JonasHendrickx.Shop.DataContext/JonasHendrickx.Shop.DataContext.csproj", "JonasHendrickx.Shop.DataContext/"]
+COPY ["JonasHendrickx.Shop.Models/JonasHendrickx.Shop.Models.csproj", "JonasHendrickx.Shop.Models/"]
+COPY ["JonasHendrickx.Shop.Api.Contracts/JonasHendrickx.Shop.Api.Contracts.csproj", "JonasHendrickx.Shop.Api.Contracts/"]
+COPY ["JonasHendrickx.Shop.Services/JonasHendrickx.Shop.Services.csproj", "JonasHendrickx.Shop.Services/"]
+COPY ["JonasHendrickx.Shop.Infrastructure/JonasHendrickx.Shop.Infrastructure.csproj", "JonasHendrickx.Shop.Infrastructure/"]
 RUN dotnet restore "JonasHendrickx.Shop.Api/JonasHendrickx.Shop.Api.csproj"
 COPY . .
 WORKDIR "/src/JonasHendrickx.Shop.Api"
