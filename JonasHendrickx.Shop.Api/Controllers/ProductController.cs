@@ -20,6 +20,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             _logger = logger;
         }
         
+        /// <summary>
+        /// Create a product.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">productId:uuid.</response>
+        /// <response code="500">Can't create a product right now.</response>
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductInputModel inputModel)
         {

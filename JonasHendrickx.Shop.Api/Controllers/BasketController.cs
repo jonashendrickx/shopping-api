@@ -20,6 +20,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             _logger = logger;
         }
         
+        /// <summary>
+        /// Create a basket.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">basketId:uuid.</response>
+        /// <response code="500">Oops! Can't create your basket right now.</response>
         [HttpPost]
         public async Task<IActionResult> Create()
         {
@@ -27,15 +33,28 @@ namespace JonasHendrickx.Shop.Api.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("{id}")]
-
+        /// <summary>
+        /// Delete a basket.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="id">basketId</param>
+        /// <response code="200">Basket created.</response>
+        /// <response code="500">Oops! Can't delete your basket right now.</response>
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _basketService.DeleteAsync(id);
             return NoContent();
         }
-
-        [HttpGet("{id}/Amount")]
+        
+        /// <summary>
+        /// Get value of items in basket.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">amount:number.</response>
+        /// <response code="400">Oops! A wrong parameter was supplied. Can't calculate the value of your basket right now.</response>
+        /// <response code="500">Oops! Can't calculate the value of your basket right now.</response>
+        [HttpGet("{id:guid}/Amount")]
         public async Task<IActionResult> GetAmount(Guid id)
         {
             try
@@ -49,7 +68,14 @@ namespace JonasHendrickx.Shop.Api.Controllers
             }
         }
 
-        [HttpPost("{basketId}/AddProductListing")]
+        /// <summary>
+        /// Add a product listing to a basket.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">productListingId:uuid.</response>
+        /// <response code="400">Oops! A wrong parameter was supplied. Can't add a product listing to your basket right now.</response>
+        /// <response code="500">Can't add a product listing to your basket right now.</response>
+        [HttpPost("{basketId:guid}/AddProductListing")]
         public async Task<IActionResult> AddProductListing(Guid basketId, AddProductListingInputModel body)
         {
             try

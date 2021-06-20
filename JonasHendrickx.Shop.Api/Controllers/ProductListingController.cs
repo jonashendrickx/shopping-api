@@ -21,6 +21,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             _logger = logger;
         }
         
+        /// <summary>
+        /// Create a product listing for a product.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">productListingId:uuid.</response>
+        /// <response code="500">Can't create a product listing right now.</response>
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductListingInputModel inputModel)
         {
@@ -28,6 +34,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             return Ok(id);
         }
 
+        /// <summary>
+        /// Get all product listings.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200"></response>
+        /// <response code="500">Can't create a product listing right now.</response>
         [HttpGet]
         public async Task<IActionResult> Get()
         {

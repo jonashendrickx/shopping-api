@@ -20,6 +20,12 @@ namespace JonasHendrickx.Shop.Api.Controllers
             _logger = logger;
         }
         
+        /// <summary>
+        /// Create a discount for a product listing.
+        /// </summary>
+        /// <remarks></remarks>
+        /// <response code="200">discountId:uuid.</response>
+        /// <response code="500">Can't create a discount for the product listing right now.</response>
         [HttpPost]
         public async Task<IActionResult> Create(CreateDiscountInputModel inputModel)
         {

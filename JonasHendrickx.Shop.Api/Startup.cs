@@ -1,3 +1,4 @@
+using System.IO;
 using JonasHendrickx.Shop.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,8 @@ namespace JonasHendrickx.Shop.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JonasHendrickx.Shop.Api", Version = "v1" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "JonasHendrickx.Shop.Api.xml");
+                c.IncludeXmlComments(filePath);
             });
         }
 
